@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172e45">
+<meta name="description" content="Entrenador personal de conjugación francesa A1–B2.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Conjuga FR</title>
+<style>
+:root{--navy:#172e45;--blue:#2878b9;--bg:#f3f6fa;--card:#fff;--ink:#192838;--muted:#667789;--line:#dce4ec;--green:#16804b;--red:#b93838;--amber:#9b6500}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:var(--navy);color:white;padding:22px max(18px,calc((100vw - 760px)/2));padding-top:calc(20px + env(safe-area-inset-top));}
+.brand{font-weight:800;letter-spacing:.08em;font-size:13px;color:#b9d8ef}.hero{font-size:25px;font-weight:750;margin:8px 0 3px}.sub{color:#d1dfeb;font-size:14px}
+main{max-width:760px;margin:auto;padding:18px 16px 45px}
+.tabs{display:flex;gap:8px;margin:0 0 16px;overflow:auto}.tab{border:1px solid var(--line);background:white;border-radius:99px;padding:9px 15px;font-weight:650;color:var(--muted);white-space:nowrap}.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px #18334c08}
+h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 7px}
+label{display:block;font-size:13px;color:var(--muted);font-weight:650;margin:12px 0 5px}
+select,input{width:100%;padding:13px 12px;border:1px solid #cbd6e1;border-radius:11px;background:#fff;color:var(--ink);font:inherit}
+button{font:inherit;cursor:pointer}.primary{width:100%;border:0;border-radius:12px;background:var(--blue);color:white;font-weight:750;padding:14px;margin-top:14px}.secondary{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 13px;color:var(--ink);font-weight:650}
+.prompt{background:#f1f6fb;border-radius:14px;padding:17px;margin:14px 0}.tag{display:inline-block;font-size:12px;font-weight:750;color:#28628e;background:#e0effb;border-radius:99px;padding:5px 9px}.verb{font-size:25px;font-weight:800;margin:10px 0 2px}.hint{color:var(--muted);font-size:14px}
+.feedback{padding:14px;border-radius:12px;margin-top:12px}.correct{background:#e9f7ef;color:#145b38}.wrong{background:#fff0f0;color:#8c2525}.answer{font-size:19px;font-weight:800;margin:4px 0}.explain{font-size:14px;margin-top:7px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#f2f6fa;border-radius:12px;padding:12px}.num{font-size:22px;font-weight:800}.small{font-size:12px;color:var(--muted)}
+.progress{height:8px;background:#e8edf2;border-radius:99px;overflow:hidden;margin:8px 0}.progress span{display:block;height:100%;background:#2e9a68;width:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.error-item{padding:11px 0;border-top:1px solid var(--line)}.error-item:first-child{border:0}
+.hidden{display:none!important}.muted{color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
+@media(min-width:600px){main{padding-top:24px}.panel{padding:22px}}
+</style>
+</head>
+<body>
+<header><div class="brand">CONJUGA FR</div><div class="hero">Tu entrenador de conjugación</div><div class="sub">Practica francés · A1–B2 · Aprende de tus errores</div></header>
+<main>
+<nav class="tabs" aria-label="Secciones">
+<button class="tab active" data-tab="practice">Practicar</button>
+<button class="tab" data-tab="progress">Mi progreso</button>
+<button class="tab" data-tab="mistakes">Mis errores</button>
+</nav>
+
+<section id="practice">
+<div class="panel">
+<h2>Configura tu ejercicio</h2>
+<label for="level">Nivel</label><select id="level"><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>Todos</option></select>
+<label for="tense">Tiempo verbal</label><select id="tense"><option value="all">Todos los tiempos disponibles</option><option>Présent</option><option>Passé composé</option><option>Imparfait</option><option>Futur simple</option><option>Conditionnel présent</option><option>Plus-que-parfait</option><option>Subjonctif présent</option></select>
+<label for="verb">Verbo</label><select id="verb"><option value="all">Aleatorio</option></select>
+<button class="primary" id="start">Empezar a practicar</button>
+</div>
+<div class="panel hidden" id="exercise">
+<div class="row"><span class="tag" id="exLevel">A1</span><span class="small" id="counter">Pregunta 1</span></div>
+<div class="prompt"><div class="hint" id="tenseLabel">Présent</div><div class="verb" id="question">je — être</div><div class="hint" id="translation"></div></div>
+<label for="answer">Escribe la forma correcta</label>
+<input id="answer" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Escribe aquí…">
+<div class="hint" style="margin-top:7px">Puedes escribir con o sin mayúscula inicial. Los acentos sí se tienen en cuenta.</div>
+<button class="primary" id="check">Corregir respuesta</button>
+<div id="feedback" aria-live="polite"></div>
+<button class="primary hidden" id="next">Siguiente ejercicio</button>
+</div>
+</section>
+
+<section id="progress" class="hidden">
+<div class="panel"><h2>Tu progreso</h2><div class="stats">
+<div class="stat"><div class="num" id="total">0</div><div class="small">Respuestas</div></div>
+<div class="stat"><div class="num" id="accuracy">0%</div><div class="small">Acierto</div></div>
+<div class="stat"><div class="num" id="streak">0</div><div class="small">Racha actual</div></div>
+</div><h3 style="margin-top:20px">Precisión por tiempo verbal</h3><div id="tenseStats"></div></div>
+<div class="panel"><div class="row"><h2>Datos guardados</h2><button class="secondary" id="reset">Reiniciar progreso</button></div><p class="small">Tu progreso se guarda únicamente en este dispositivo mediante almacenamiento local.</p></div>
+</section>
+
+<section id="mistakes" class="hidden">
+<div class="panel"><div class="row"><h2>Verbos que debes repasar</h2><span class="tag" id="mistakeCount">0 errores</span></div><div id="mistakeList" class="muted">Todavía no hay errores. ¡Sigue practicando!</div></div>
+</section>
+<footer>Conjuga FR · Primera versión · Los datos se guardan en tu dispositivo.</footer>
+</main>
+<script src="app.js"></script>
+</body></html>

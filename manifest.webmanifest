@@ -1,0 +1,9 @@
+{
+  "name": "Conjuga FR — Temario completo",
+  "short_name": "Conjuga FR",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fa",
+  "theme_color": "#172e45",
+  "description": "Entrenador de conjugación francesa organizado en 13 unidades A1–B2."
+}
